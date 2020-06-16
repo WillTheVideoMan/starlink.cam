@@ -10,8 +10,8 @@ const Sun = () => {
   return (
     <directionalLight
       ref={directionalLight}
-      position={[0, 0, 5]}
-      intensity={2}
+      position={[0, 0, 4]}
+      intensity={1}
     />
   )
 }
