@@ -19,7 +19,8 @@ const IndexPage = () => {
         <Suspense fallback={null}>
           <Universe />
         </Suspense>
-        <OrbitControls />
+        <OrbitControls dampingFactor={0.05} enablePan={false} />
+        <gridHelper args={[8, 8, `white`, `gray`]} />
         <Stats />
       </StyledCanvas>
     </Layout>

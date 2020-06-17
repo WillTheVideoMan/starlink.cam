@@ -7,13 +7,7 @@ const Sun = () => {
 
   useHelper(directionalLight, DirectionalLightHelper, 0.5, "hotpink")
 
-  return (
-    <directionalLight
-      ref={directionalLight}
-      position={[0, 0, 4]}
-      intensity={1}
-    />
-  )
+  return <directionalLight ref={directionalLight} position={[0, 0, 4]} />
 }
 
 export default Sun
