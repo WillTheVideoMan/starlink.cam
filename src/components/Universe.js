@@ -6,7 +6,7 @@ import Starlink from "./Starlink"
 const Universe = () => {
   return (
     <>
-      {/*<Earth epochUTCms={Date.now()} />*/}
+      <Earth epochUTCms={Date.now()} />
       <Sun />
       <Starlink
         inclination={51.6416}
@@ -15,8 +15,7 @@ const Universe = () => {
         argumentOfPeriapsis={130.536}
         meanAnomalyAtEpoch={325.0288}
         meanMotion={15.72125391}
-        epochYear={2008}
-        epochDayFraction={264.51782528}
+        epochUTCString={"2008-09-20T12:28:00"}
       />
       <ambientLight intensity={0.4} />
     </>

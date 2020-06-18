@@ -21,7 +21,7 @@ const Earth = ({ epochUTCms }) => {
 
   return (
     <mesh ref={mesh} rotation-y={spinOffset}>
-      <sphereBufferGeometry attach="geometry" args={[2, 64, 32]} />
+      <sphereBufferGeometry attach="geometry" args={[1, 64, 32]} />
       <meshStandardMaterial attach="material" map={texture} />
     </mesh>
   )

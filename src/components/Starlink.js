@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
+import orb from "orbjs"
 
 const Starlink = ({
   inclination,
@@ -7,27 +8,49 @@ const Starlink = ({
   argumentOfPeriapsis,
   meanAnomalyAtEpoch,
   meanMotion,
-  epochYear,
-  epochDayFraction,
+  epochUTCString,
 }) => {
-  const mu = 3.986004418e14 //For Earth
+  const dummyUTC = Date.now()
+  const mesh = useRef()
+  const dummyOffset = useRef(0)
+  const earthRadius = 6.3781e6
 
-  const period = (1 / meanMotion) * 86400
+  const epochJulianSeconds = orb.time.dateToJD(new Date(epochUTCString)) * 86400
 
-  const semiMajorAxis = Math.cbrt(
-    (Math.pow(period, 2) * mu) / (4 * Math.pow(Math.PI, 2))
+  const semiMajorAxis = orb.functions.orbitalPeriodToSemimajorAxis(
+    (1 / meanMotion) * 86400
   )
 
-  const now = new Date(1592411760790)
+  console.log(semiMajorAxis)
 
-  const deltaT =
-    (now.getUTCFullYear() - epochYear - (now.getUTCFullYear() - 1970)) *
-      31557600 +
-    now.getTime() / 1000
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentJulianSeconds =
+        orb.time.dateToJD(dummyUTC + dummyOffset.current) * 86400
+
+      const [x, xDot] = orb.propagators.keplerian(
+        semiMajorAxis,
+        eccentricity,
+        inclination,
+        rightAscensionOfAscendingNode,
+        argumentOfPeriapsis,
+        currentJulianSeconds,
+        epochJulianSeconds,
+        meanAnomalyAtEpoch
+      )
+
+      mesh.current.position.x = x[0] / earthRadius
+      mesh.current.position.y = x[1] / earthRadius
+      mesh.current.position.z = x[2] / earthRadius
+
+      dummyOffset.current += 50000
+    }, 500)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
-    <mesh>
-      <boxBufferGeometry attach="geometry" args={[0.1, 0.1, 0.1]} />
+    <mesh ref={mesh}>
+      <sphereBufferGeometry attach="geometry" args={[0.01, 16, 8]} />
       <meshStandardMaterial attach="material" />
     </mesh>
   )
